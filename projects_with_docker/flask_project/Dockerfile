@@ -1,18 +1,11 @@
-# Use an existing docker image as base
-From python:latest
-
-# Copy the requirements.txt from your work directory to the container's work directory
-# Until we copy the requirements.txt file to container work directory, pip install will not work
+FROM ubuntu:18.04
+RUN apt-get update -y
+RUN apt-get install -y python3-pip python3-dev build-essential 
+RUN mkdir /FlaskApp
+WORKDIR /FlaskApp
 COPY ./requirements.txt .
-
-# Install dependencies
-RUN pip install -r requirements.txt
-
-# Copy the source code from your work directory to the container's work directory
+RUN pip3 install -r requirements.txt
 COPY ./ ./
-
-# Exposing port 8000 on the container. This is the port where flask application is running
 EXPOSE 8000
+CMD ["python3", "hello.py"]
 
-# Startup Command
-CMD ["python", "hello.py"]
